@@ -22,11 +22,13 @@ jobs:
       - name: Instalar dependencias
         run: npm install
 
+      # --- EJECUTAR NEWMAN CORRECTAMENTE ---
       - name: Ejecutar pruebas de Postman (Newman)
         uses: anthonyvscode/newman-action@v1
         with:
           collection: Postman/collection.json
 
+      # --- DESPLEGAR EN RENDER ---
       - name: Desplegar en Render
         uses: render-examples/deploy-render@v1
         with:
