@@ -1,0 +1,34 @@
+name: CI/CD Backend Express
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Ejecutar pruebas de Postman (Newman)
+        uses: pozetroninc/github-action-newman@v1
+        with:
+          collection: Postman/collection.json
+
+      - name: Desplegar en Render
+        uses: johnbeynon/render-deploy@v1
+        with:
+          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
