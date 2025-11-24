@@ -1,36 +1,26 @@
-name: CI/CD Backend Express
+name: CI
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
   pull_request:
-    branches: ["main"]
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clonar repositorio
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Configurar Node
-        uses: actions/setup-node@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: 18
 
-      - name: Instalar dependencias
+      - name: Install dependencies
         run: npm install
 
-      # --- EJECUTAR NEWMAN CORRECTAMENTE ---
-      - name: Ejecutar pruebas de Postman (Newman)
-        uses: anthonyvscode/newman-action@v1
-        with:
-          collection: Postman/collection.json
-
-      # --- DESPLEGAR EN RENDER ---
-      - name: Desplegar en Render
-        uses: render-examples/deploy-render@v1
-        with:
-          serviceId: ${{ secrets.RENDER_SERVICE_ID }}
-          apiKey: ${{ secrets.RENDER_API_KEY }}
+      - name: Run tests
+        run: npm test
